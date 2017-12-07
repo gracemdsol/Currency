@@ -1,13 +1,13 @@
 require File.expand_path('../lib/currency/version', __FILE__)
 
 Gem::Specification.new do |s|
-  s.name = "currency"
-  s.version = Currency::VERSION
+  s.name = "mdsol_currency"
+  s.version = MdsolCurrency::VERSION
   s.summary = "Mdsol Currency"
   s.description = ""
   s.authors = ["Grace Zhou"]
   s.email = "yazhou@mdsol.com"
-  s.homepage = "https://github.com/gracemdsol/currency"
+  s.homepage = "https://github.com/gracemdsol/mdsol_currency"
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.require_paths = ["lib"]
