@@ -1,36 +1,37 @@
 class MdsolCurrency
   class Location
+    include MdsolCurrency::Remote
+
     class << self
       def all
         @all ||= references_countries.select { |country| location_defaults[country[:uuid]][:is_mdsol_viewable] }
       end
 
       private
-      def references_countries
-        @references_countries ||= Euresource::Country.get(:all, params: {per_page: 300})
-                                      .map { |obj| obj.attributes.with_indifferent_access }
+      def countries
+        @countries ||= remote_countries.map { |obj| obj.attributes.with_indifferent_access }
         # .map(&:attributes)
         # .each_with_object({}) { |obj, hash| hash[obj['uuid']]= obj.with_indifferent_access }
       end
 
       def location_defaults
-        @location_defaults ||= Euresource::LocationDefault.get(:all)
+        @location_defaults ||= remote_location_defaults
                                    .map(&:attributes)
                                    .each_with_object({}) do |obj, hash|
-          country_uuid = obj.uri.split(':').last  # mdsol_tools? parse
+          country_uuid = obj.uri.split(':').last # mdsol_tools? parse
           hash[country_uuid]= obj.with_indifferent_access
         end
       end
     end
 
-    attr_reader :uuid, :name, :three_letter_code
+    attr_reader :uuid, :name, :code, :default_currency_uuid
 
     def initialize(uuid)
-      data = references_countries.select{|country| country[:uuid] == uuid}.first
+      data = countries.find { |country| country[:uuid] == uuid }
       # raise error - not found
       @uuid = data[:uuid]
       @name = data[:name]
-      @three_letter_code = data[:three_letter_code]
+      @code = data[:three_letter_code]
     end
   end
 end

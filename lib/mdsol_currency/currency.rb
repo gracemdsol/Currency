@@ -1,29 +1,40 @@
 class MdsolCurrency
   class Currency
+    include MdsolCurrency::Remote
+
     class << self
       def all
-        @all ||= references_currencies
+        @all ||= currencies
                      .map(&:attributes)
                      .select { |currency| viewable_currency_uuids.include?(currency[:uuid]) }
       end
 
 
       private
-      def references_currencies
-        @references_currencies ||= Euresource::Currency.get(:all, params: {per_page: 300}, method: :index)
+      def currencies
+        @currencies ||= remote_currencies
       end
 
       def location_defaults
-        @location_defaults ||= Euresource::LocationDefault.get(:all)
+        @location_defaults ||= remote_location_defaults
       end
+    end
 
-      def viewable_currency_uuids
-        @viewable_currencies ||= location_defaults.each_with_object([]) { |obj, arr| arr << obj.uuid if obj.is_mdsol_viewable }
-      end
+    attr_reader :uuid, :name, :code, :symbol
 
-      # def exchange_rates
-      #   @exchange_rates ||= Euresource::ExchangeRate.get(:all, params: {build_tag: 65}, method: :index)
-      # end
+    def initialize(uuid)
+      data = currencies.find { |currency| currency[:uuid] == uuid }
+      # raise error - not found
+      @uuid = data[:uuid]
+      @name = data[:name]
+      @code = data[:code]
+      @symbol = data[:symbol]
+    end
+
+    def exchange_rate(build_tag:)
+      @exchange_rate ||= remote_exchange_rates(build_tag: build_tag)
+                             .find { |obj| obj.currency_uuid == self.uuid }
+                             .try(:exchange_rate)
     end
   end
 end
