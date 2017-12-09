@@ -1,4 +1,4 @@
-require File.expand_path('../lib/currency/version', __FILE__)
+require File.expand_path('../lib/mdsol_currency/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name = "mdsol_currency"
