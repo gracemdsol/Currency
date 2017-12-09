@@ -11,8 +11,8 @@ class MdsolCurrency
     attr_reader :uuid, :name, :code, :symbol
 
     def initialize(uuid)
+      raise ArgumentError, 'Invalid currency uuid' unless viewable_currency_uuids.include?(uuid)
       data = remote_currencies.find { |currency| currency[:uuid] == uuid }
-      # raise error - not found
       @uuid = data[:uuid]
       @name = data[:name]
       @code = data[:code]

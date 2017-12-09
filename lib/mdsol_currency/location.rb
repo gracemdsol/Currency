@@ -11,12 +11,13 @@ class MdsolCurrency
     attr_reader :uuid, :name, :code, :default_currency_uuid
 
     def initialize(uuid)
-      data = remote_countries.find { |country| country.uri == 'com:mdsol:countries:'.concat(uuid) }
-      # raise error - not found
-      @uuid = data.uuid
-      @name = data.name
-      @code = data.three_letter_code
-      @default_currency_uuid = data.default_currency_uuid
+      raise ArgumentError, 'Invalid location uuid' unless viewable_country_uuids.include?(uuid)
+      country = remote_countries.find { |country| country.uuid == uuid }
+      default = remote_location_defaults.find{ |default| default.uri == 'com:mdsol:countries:'.concat(uuid) }
+      @uuid = country.uuid
+      @name = country.name
+      @code = country.three_letter_code
+      @default_currency_uuid = default.default_currency_uuid
     end
   end
 end
