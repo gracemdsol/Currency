@@ -5,7 +5,7 @@ class MdsolCurrency
     PRECISION = 4
 
     def initialize(build_tag)
-      raise ArgumentError, 'Invalid build tag' if build_tag > Remote::latest_build_tag
+      raise ArgumentError, 'Invalid build tag' if build_tag > Remote.latest_build_tag
       @build_tag = build_tag
     end
 
