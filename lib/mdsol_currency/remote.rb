@@ -1,15 +1,15 @@
 class MdsolCurrency
-  module Remote
-    def remote_countries
-      @remote_countries ||= Euresource::Country.get(:all, params: {per_page: 300}, method: :index)
+  class Remote
+    def countries
+      @countries ||= Euresource::Country.get(:all, params: {per_page: 300}, method: :index)
     end
 
-    def remote_currencies
-      @remote_currencies ||= Euresource::Currency.get(:all, params: {per_page: 300}, method: :index)
+    def currencies
+      @currencies ||= Euresource::Currency.get(:all, params: {per_page: 300}, method: :index)
     end
 
-    def remote_location_defaults
-      @remote_location_defaults ||= Euresource::LocationDefault.get(:all)
+    def location_defaults
+      @location_defaults ||= Euresource::LocationDefault.get(:all)
     end
 
     def latest_build_tag
@@ -19,7 +19,7 @@ class MdsolCurrency
     # =========================================== Exchange Rates ==============================================
 
     # Preload last four builds' exchange rates
-    def remote_exchange_rates(build_tag:)
+    def exchange_rates(build_tag:)
       case build_tag
         when latest_build_tag
           @latest_exchange_rates ||= Euresource::ExchangeRate.get(:all, params: {build_tag: build_tag}, method: :index)

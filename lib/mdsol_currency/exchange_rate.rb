@@ -1,7 +1,5 @@
 class MdsolCurrency
   class ExchangeRate
-    include MdsolCurrency::Remote
-
     attr_reader :build_tag
 
     PRECISION = 4

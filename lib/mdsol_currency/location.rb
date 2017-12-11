@@ -1,10 +1,8 @@
 class MdsolCurrency
   class Location
-    include MdsolCurrency::Remote
-
     class << self
       def all
-        @all ||= remote_countries.select { |country| viewable_country_uuids.include?(country.uuid) }
+        @all ||= Remote::countries.select { |country| viewable_country_uuids.include?(country.uuid) }
       end
     end
 
@@ -12,8 +10,8 @@ class MdsolCurrency
 
     def initialize(uuid)
       raise ArgumentError, 'Invalid location uuid' unless viewable_country_uuids.include?(uuid)
-      country = remote_countries.find { |country| country.uuid == uuid }
-      default = remote_location_defaults.find{ |default| default.uri == 'com:mdsol:countries:'.concat(uuid) }
+      country = Remote::countries.find { |country| country.uuid == uuid }
+      default = Remote::location_defaults.find{ |default| default.uri == 'com:mdsol:countries:'.concat(uuid) }
       @uuid = country.uuid
       @name = country.name
       @code = country.three_letter_code
