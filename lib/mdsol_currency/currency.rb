@@ -10,11 +10,11 @@ class MdsolCurrency
 
     def initialize(uuid)
       raise ArgumentError, 'Invalid currency uuid' unless Remote.viewable_currency_uuids.include?(uuid)
-      data = Remote.currencies.find { |currency| currency[:uuid] == uuid }
-      @uuid = data[:uuid]
-      @name = data[:name]
-      @code = data[:code]
-      @symbol = data[:symbol]
+      data = Remote.currencies.find { |currency| currency.uuid == uuid }
+      @uuid = data.uuid
+      @name = data.name
+      @code = data.code
+      @symbol = data.symbol
     end
 
     def exchange_rate(build_tag:)
