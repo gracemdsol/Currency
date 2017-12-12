@@ -1,4 +1,4 @@
-class MdsolCurrency
+module Mdsol
   class Location
     class << self
       def all

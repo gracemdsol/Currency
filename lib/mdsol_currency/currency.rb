@@ -1,4 +1,4 @@
-class MdsolCurrency
+module Mdsol
   class Currency
     class << self
       def all

@@ -1,4 +1,4 @@
-class MdsolCurrency
+module Mdsol
   class ExchangeRate
     attr_reader :build_tag
 
